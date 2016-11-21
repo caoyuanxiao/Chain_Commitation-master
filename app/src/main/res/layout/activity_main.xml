@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.administrator.chain_commitation.MainActivity">
+
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+<Button
+    android:id="@+id/nomal_notification"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="普通通知"/>
+        <Button
+            android:id="@+id/xuangua_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="悬挂通知"/>
+        <Button
+            android:id="@+id/Folding_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="折疊式通知"/>
+
+
+        <Button
+            android:text="设置为默认的短信APP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/change_default_app"/>
+    </LinearLayout>
+
+</RelativeLayout>
