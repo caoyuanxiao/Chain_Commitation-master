@@ -19,6 +19,7 @@ import android.telephony.SmsMessage;
 import android.widget.Toast;
 
 import com.example.administrator.chain_commitation.MainActivity;
+import com.example.administrator.chain_commitation.MyActivity;
 import com.example.administrator.chain_commitation.Observer.SmsMonitorObserver;
 import com.example.administrator.chain_commitation.Utils.HandlerUtils;
 
@@ -37,35 +38,39 @@ public class SmsReceiver extends BroadcastReceiver {
         //设置默认短信之后 会收到下面的两个信息都可以获取到  所以这里插入了两次
 
 
-        System.out.println("action："+intent.getAction());
+        System.out.println("action：" + intent.getAction());
 
 
-
-
-        if (Build.VERSION.SDK_INT<19){
-            if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-                GetDateAndInsert(context,intent);
-                    abortBroadcast();
+        if (Build.VERSION.SDK_INT < 19) {
+            if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
+                GetDateAndInsert(context, intent);
+                abortBroadcast();
             }
-        }else{
-            if (!Telephony.Sms.getDefaultSmsPackage(context).equals(context.getPackageName())){
+        } else {
+            if (!Telephony.Sms.getDefaultSmsPackage(context).equals(context.getPackageName())) {
                 //不是默认短信软件
-                if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
-                   //获取信息吧
-                    GetDateAndInsert(context,intent);
+                if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")) {
+                    //获取信息吧
+                    GetDateAndInsert(context, intent);
                 }
 
-            }else {
-                if (intent.getAction().equals("android.provider.Telephony.SMS_DELIVER")){
+            } else {
+                if (intent.getAction().equals("android.provider.Telephony.SMS_DELIVER")) {
                     //获取信息吧
-                    GetDateAndInsert(context,intent);
+                    GetDateAndInsert(context, intent);
                 }
             }
         }
-        context.getContentResolver().registerContentObserver(Uri.parse("content://sms"), true, new SmsMonitorObserver(HandlerUtils.GetInstance(), context));
+        context.getContentResolver().registerContentObserver(Uri.parse("content://sms"), true,
+                new SmsMonitorObserver(HandlerUtils.GetInstance(), context));
+        //设置点击跳转
+        Intent hangIntent = new Intent();
+        hangIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        hangIntent.setClass(context, MyActivity.class);
+
     }
 
-    private void GetDateAndInsert(Context context,Intent intent) {
+    private void GetDateAndInsert(Context context, Intent intent) {
         SmsMessage msg = null;
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
@@ -84,7 +89,8 @@ public class SmsReceiver extends BroadcastReceiver {
                     return;
                 } else {
                     Toast.makeText(context, msgTxt, Toast.LENGTH_LONG).show();
-                    System.out.println("SmsReceiver发送人：" + senderNumber + "  短信内容：" + msgTxt + "接受时间：" + receiveTime);
+                    System.out.println("SmsReceiver发送人：" + senderNumber + "  短信内容：" + msgTxt +
+                            "接受时间：" + receiveTime);
 
                 }
             }

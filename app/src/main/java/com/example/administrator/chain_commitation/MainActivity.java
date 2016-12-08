@@ -117,10 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
         builder.setAutoCancel(true);
         builder.setContentTitle("悬挂式通知");
-        //设置点击跳转
-        Intent hangIntent = new Intent();
-        hangIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        hangIntent.setClass(this, MyActivity.class);
+
         //如果描述的PendingIntent已经存在，则在产生新的Intent之前会先取消掉当前的
         PendingIntent hangPendingIntent = PendingIntent.getActivity(this, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setFullScreenIntent(hangPendingIntent, true);

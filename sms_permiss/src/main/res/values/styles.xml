@@ -1,11 +1,43 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
+    
+    <style name="MyAppTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+
+    </style>
+    <style name="UserMainActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
+        <!-- 设置actionbar背景 -->
+        <item name="android:background">#428bca</item>
+        <!-- 去掉acionbar的应用图标和标题 -->
+        <item name="android:displayOptions">showTitle</item>
+    </style>
+
+
+    <style name="CustomTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@android:color/black</item>
+
+        <!-- 注意，该句指定此样式中的actionbar的样式 -->
+        <item name="android:actionBarStyle">@style/UserMainActionBarStyle</item>
+
+        <!-- 注意，该句指定此样式中的actionbar的高度 -->
+        <item name="android:actionBarSize">50dp</item>
+
+        <!-- 注意，该句指定此样式中的actionbar底部没有阴影和分界线高度 -->
+        <item name="android:windowContentOverlay">@null</item>
+
+
+    </style>
+
+
+
 
 </resources>

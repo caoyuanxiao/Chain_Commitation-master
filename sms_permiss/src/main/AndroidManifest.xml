@@ -4,7 +4,7 @@
 
     <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" android:supportsRtl="true" android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -12,14 +12,19 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Show_detail_Activity"></activity>
+
         <receiver android:name=".BroadcastRecevier.SMS">
             <intent-filter android:priority="1000">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"></action>
             </intent-filter>
         </receiver>
+
+        <service android:name=".Service.WindowService"></service>
     </application>
 
     <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
     <uses-permission android:name="android.permission.READ_SMS"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"></uses-permission>
 </manifest>
