@@ -25,9 +25,7 @@ public class MmsReceiver extends BroadcastReceiver {
                 Object[] pdusObj = (Object[]) bundle.get("pdus");
                 for (Object p : pdusObj) {
                     msg = SmsMessage.createFromPdu((byte[]) p);
-
                     String msgTxt = msg.getMessageBody();//得到消息的内容
-
                     Date date = new Date(msg.getTimestampMillis());//时间
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String receiveTime = format.format(date);

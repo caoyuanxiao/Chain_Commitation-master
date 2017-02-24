@@ -56,14 +56,5 @@ public class SmsMonitorObserver extends ContentObserver {
                 //  new Notification(mContext).ShowXaungua();
             }
         }
-
-
-
-
-
     }
-
-
-
-
 }

@@ -7,12 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
-
-import com.example.sms_permiss.MainActivity;
 import com.example.sms_permiss.Service.WindowService;
 import com.example.sms_permiss.bean.Sms_Info;
 

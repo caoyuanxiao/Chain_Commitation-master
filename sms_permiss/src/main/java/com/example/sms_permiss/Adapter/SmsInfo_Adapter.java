@@ -30,7 +30,7 @@ public class SmsInfo_Adapter extends RecyclerView.Adapter<SmsInfo_Adapter.ViewHo
 
     public SmsInfo_Adapter(Context context, String address) {
         mContext = context;
-        new SmsDateBaseUtils(mContext).GetDate();
+        new SmsDateBaseUtils(mContext).GetLaterDate();
         mSms_infos = new SmsDateBaseUtils(mContext).FromNumberGetdate(address);
     }
 

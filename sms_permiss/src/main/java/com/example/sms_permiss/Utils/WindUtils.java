@@ -30,4 +30,6 @@ public class WindUtils {
     public int GetWindowHeight(){
         return  wm.getDefaultDisplay().getHeight();
     }
+
+
 }

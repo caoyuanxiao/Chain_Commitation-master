@@ -1,5 +1,7 @@
 package com.example.sms_permiss;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -18,11 +21,13 @@ import android.widget.Toast;
 
 import com.example.sms_permiss.Adapter.ShowDetail_Adapter;
 import com.example.sms_permiss.Adapter.SmsRecycle_Adpter;
+import com.example.sms_permiss.Utils.WindUtils;
 
 import org.w3c.dom.Text;
 
 import static android.R.attr.id;
 import static android.R.attr.menuCategory;
+import static com.example.sms_permiss.R.id.textView;
 
 /**
  * Created by Smile on 2016/11/22.
@@ -52,14 +57,26 @@ public class Show_detail_Activity extends AppCompatActivity implements View.OnCl
     }
 
     private void SetButtomPosition() {
-        mMWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        mWindHeight = mMWindowManager.getDefaultDisplay().getHeight();
-        mWindWidth = mMWindowManager.getDefaultDisplay().getWidth();
-        mHeight_buttomlayout = ll_showdetail_buttom.getHeight();
-        mShowdetailEditLayoutParams = (LinearLayout.LayoutParams)
+        mWindHeight = WindUtils.GetInstance(this).GetWindowHeight();
+        mWindWidth = WindUtils.GetInstance(this).GetWindowWidth();
+        System.out.println("屏幕的宽度：" + mWindWidth + "屏幕的高度：" + mWindHeight);
+
+        /*mShowdetailEditLayoutParams = (LinearLayout.LayoutParams)
                 ll_showdetail_edit.getLayoutParams();
-        mShowdetailEditLayoutParams.setMargins(0,mWindHeight,0,mHeight_buttomlayout+mWindHeight);
-        ll_showdetail_edit.setLayoutParams(mShowdetailEditLayoutParams);
+        mShowdetailEditLayoutParams.setMargins(0, mWindHeight, 0, mHeight_buttomlayout );
+
+
+        ll_showdetail_edit.setLayoutParams(mShowdetailEditLayoutParams);*/
+        ViewTreeObserver vto = ll_showdetail_buttom.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            public boolean onPreDraw() {
+                mHeight_buttomlayout = ll_showdetail_buttom.getMeasuredHeight();
+                System.out.println("底部的高度" + mHeight_buttomlayout);
+
+                
+                return true;
+            }
+        });
 
     }
 
@@ -117,28 +134,75 @@ public class Show_detail_Activity extends AppCompatActivity implements View.OnCl
 
     //显示底部显示popuwind的布局
     private void ShowPopuWindButtomLayout() {
+        final ObjectAnimator translationY = ObjectAnimator.ofFloat(ll_showdetail_edit,
+                "translationY", 0, mHeight_buttomlayout);
+        translationY.setDuration(500);
+        translationY.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                final ObjectAnimator translationY = ObjectAnimator.ofFloat(ll_showdetail_buttom,
+                        "translationY",  mHeight_buttomlayout,0);
+                translationY.setDuration(500);
+                translationY.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        translationY.start();
     }
 
     //显示底部显示Edittext的布局
     private void ShowEditButtomLayout() {
-        Toast.makeText(this,"开启Edit动画",0).show();
 
-        ll_showdetail_buttom.setVisibility(View.GONE);
-        TranslateAnimation translateAnimation1=new TranslateAnimation(0,0,mWindHeight,mWindHeight-mHeight_buttomlayout);
-        translateAnimation1.setDuration(500);
-        translateAnimation1.setFillAfter(true);
-        ll_showdetail_edit.setAnimation(translateAnimation1);
-        translateAnimation1.startNow();
-        /*TranslateAnimation translateAnimation=new TranslateAnimation(0,0,mHeight_buttomlayout,mWindHeight);
-        translateAnimation.setDuration(500);
-        ll_showdetail_buttom.setAnimation(translateAnimation);
-        translateAnimation.startNow();*/
+        final ObjectAnimator translationY = ObjectAnimator.ofFloat(ll_showdetail_buttom,
+                "translationY", 0, mHeight_buttomlayout);
+        translationY.setDuration(500);
+        translationY.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
-        /*TranslateAnimation translateAnimation1=new TranslateAnimation(0,0,mWindHeight,mHeight_buttomlayout);
-        translateAnimation1.setDuration(500);
-        ll_showdetail_edit.setAnimation(translateAnimation1);
-        translateAnimation1.startNow();*/
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+                if (ll_showdetail_edit.getVisibility()==View.GONE){
+                    ll_showdetail_edit.setVisibility(View.VISIBLE);
+                }
+
+                final ObjectAnimator translationY = ObjectAnimator.ofFloat(ll_showdetail_edit,
+                        "translationY", mHeight_buttomlayout,0);
+                translationY.setDuration(500);
+                translationY.start();
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+        translationY.start();
 
     }
 }

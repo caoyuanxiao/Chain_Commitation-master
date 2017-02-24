@@ -6,23 +6,19 @@
               android:layout_height="match_parent">
 
 
-	<RelativeLayout
-		android:background="@color/colorPrimary"
-		android:layout_width="match_parent"
-		android:layout_height="40dp">
-		<TextView
-		    android:layout_centerInParent="true"
-			android:textSize="20dp"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="QQ"
-			/>
+	<Button
+		android:layout_marginTop="40dp"
+		android:textSize="20dp"
+		android:id="@+id/btn_call_phone"
+		android:text="打电话"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
 
-	</RelativeLayout>
-
-
-	<android.support.v7.widget.RecyclerView
-		android:id="@+id/second_recyclerview"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+	<Button
+		android:layout_marginTop="40dp"
+		android:textSize="20dp"
+		android:id="@+id/btn_send_sms"
+		android:text="发短信"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
 </LinearLayout>

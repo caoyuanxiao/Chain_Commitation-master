@@ -22,6 +22,8 @@ import com.example.sms_permiss.Adapter.SmsRecycle_Adpter;
 import com.example.sms_permiss.BroadcastRecevier.SMS;
 import com.example.sms_permiss.MainActivity;
 import com.example.sms_permiss.R;
+import com.example.sms_permiss.Utils.AppRunStateUtils;
+import com.example.sms_permiss.Utils.WindUtils;
 import com.example.sms_permiss.bean.Sms_Info;
 
 import java.util.List;
@@ -126,16 +128,23 @@ public class WindowService extends Service implements View.OnClickListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        InitMyView(myView);
-        if (flag) {
-            flag = false;
-            wManager.addView(myView, mParams);//添加窗口
+        //在这里判断是否处于前台还是后台
+
+        if (AppRunStateUtils.GetInsta().isRunningForeground(this)) {
+            System.out.println("目前App处于前台  不需要显示window dialog");
         } else {
-            //直接更新RecyclerView  不确定是否需要更新Windmanger
-            if (sms_recycleradpter != null) {
-                sms_recycleradpter.notifyDataSetChanged();
+            InitMyView(myView);
+            if (flag) {
+                flag = false;
+                wManager.addView(myView, mParams);//添加窗口
+            } else {
+                //直接更新RecyclerView  不确定是否需要更新Windmanger
+                if (sms_recycleradpter != null) {
+                    sms_recycleradpter.notifyDataSetChanged();
+                }
             }
         }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -158,9 +167,10 @@ public class WindowService extends Service implements View.OnClickListener {
                 CloseWindow();
                 break;
             case R.id.ll_open_sms:
-                // Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag
+                // Calling startActivity() from outside of an Activity  context requires the
+                // FLAG_ACTIVITY_NEW_TASK flag
                 Intent intent = new Intent(WindowService.this, MainActivity.class);
-                intent.addFlags(FLAG_ACTIVITY_NEW_TASK  );
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 CloseWindow();
                 break;

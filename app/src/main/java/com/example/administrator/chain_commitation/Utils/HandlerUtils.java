@@ -11,20 +11,16 @@ import java.security.PublicKey;
 
 public class HandlerUtils {
 
-    private HandlerUtils(){
-
+    private HandlerUtils() {
     }
 
+    public static Handler handler;
 
-   public static Handler handler;
-    public static Handler GetInstance(){
-        if (handler!=null){
-
-        }else {
-            handler=new Handler();
+    public static Handler GetInstance() {
+        if (handler != null) {
+        } else {
+            handler = new Handler();
         }
-        return  handler;
+        return handler;
     }
-
-
 }
