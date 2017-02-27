@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             edit.putString("defaultSmsPackage", defaultSmsPackage);
             edit.commit();
         }
-
     }
 
     Sms_Info lastSmsInfo;
@@ -101,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.nomal_notification:
                 //发送短信
                 //  SendSms();
-                mSmsDateBaseUtils.SendSms(this);
+               // mSmsDateBaseUtils.SendSms(this);
+                mSmsDateBaseUtils.GetLaterDate();
                 break;
         }
     }

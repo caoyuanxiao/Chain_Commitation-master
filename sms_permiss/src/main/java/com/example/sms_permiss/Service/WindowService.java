@@ -1,14 +1,11 @@
 package com.example.sms_permiss.Service;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,19 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sms_permiss.Adapter.SmsRecycle_Adpter;
-import com.example.sms_permiss.BroadcastRecevier.SMS;
 import com.example.sms_permiss.MainActivity;
 import com.example.sms_permiss.R;
 import com.example.sms_permiss.Utils.AppRunStateUtils;
-import com.example.sms_permiss.Utils.WindUtils;
 import com.example.sms_permiss.bean.Sms_Info;
 
 import java.util.List;
 
-import static android.R.attr.start;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**

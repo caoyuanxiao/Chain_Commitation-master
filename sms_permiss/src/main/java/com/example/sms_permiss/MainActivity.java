@@ -92,11 +92,11 @@ public class MainActivity extends AppCompatActivity {
             //次软件不是默认的APP 则设置为默认的APP
             System.out.println("本APP不是默认的短信APP");
             // App is not default.
-            // Show the "not currently set as the default SMS app" interface
+            // Show the "not currently set as the default SmsReceiver app" interface
            /* View viewGroup = findViewById(R.id.not_default_app);
             viewGroup.setVisibility(View.VISIBLE);*/
 
-            // Set up a button that allows the user to change the default SMS app
+            // Set up a button that allows the user to change the default SmsReceiver app
 
             Intent intent =
                     new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             //现在已经是默认的APP了  点击则还原默认的短信软件
             // App is the default.
-            // Hide the "not currently set as the default SMS app" interface
+            // Hide the "not currently set as the default SmsReceiver app" interface
             // View viewGroup = findViewById(R.id.not_default_app);
             // viewGroup.setVisibility(View.GONE);
 

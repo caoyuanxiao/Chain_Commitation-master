@@ -27,7 +27,7 @@ public class SmsDateBaseUtils {
     }
 
 
-    //根据传递过来的电话号码获取短信  3解析出来短信内容
+    //根据传递过来的电话号码获取短信  解析出来短信内容
     public List<Sms_Info> FromNumberGetdate(String address) {
         Cursor mCursor = mContext.getContentResolver().query(Uri.parse("content://sms"), new
                         String[]{"_id", "address", "date", "read", "body", "type", "thread_id",
@@ -61,7 +61,7 @@ public class SmsDateBaseUtils {
 
 
     /**
-     * 根据传递过来的电话号码获取短信  在主界面的windows上显示的数据
+     * 根据传递过来的电话号码获取短信 在windows上显示的数据
      * 根据read判断是已读短信还是未读的短信
      * 0 未读  1 已读
      */
@@ -105,8 +105,6 @@ public class SmsDateBaseUtils {
      */
 
     public void GetLaterDate() {
-
-
 
         Cursor cursor = mContext.getContentResolver().query(Uri.parse("content://sms/"), new
                 String[]{"* from threads --"}, null, null, null);
