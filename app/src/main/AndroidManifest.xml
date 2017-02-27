@@ -29,8 +29,6 @@
 
 		</activity>
 
-		<activity android:name=".MyActivity"></activity>
-
 
 		<service
 			android:name=".Service.HeadlessSmsSendService"

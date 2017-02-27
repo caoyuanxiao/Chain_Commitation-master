@@ -9,10 +9,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,14 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sms_permiss.Adapter.ShowDetail_Adapter;
-import com.example.sms_permiss.Adapter.SmsRecycle_Adpter;
 import com.example.sms_permiss.Utils.WindUtils;
-
-import org.w3c.dom.Text;
-
-import static android.R.attr.id;
-import static android.R.attr.menuCategory;
-import static com.example.sms_permiss.R.id.textView;
 
 /**
  * Created by Smile on 2016/11/22.
@@ -71,9 +62,6 @@ public class Show_detail_Activity extends AppCompatActivity implements View.OnCl
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
                 mHeight_buttomlayout = ll_showdetail_buttom.getMeasuredHeight();
-                System.out.println("底部的高度" + mHeight_buttomlayout);
-
-                
                 return true;
             }
         });

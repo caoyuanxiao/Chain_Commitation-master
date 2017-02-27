@@ -1,15 +1,12 @@
 package com.example.administrator.chain_commitation.Service;
 
 import android.app.IntentService;
-import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.provider.Telephony;
-import android.support.annotation.Nullable;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -73,6 +70,8 @@ public class HeadlessSmsSendService extends IntentService {
      * @param destinations    recipients of message
      * @param message         message
      */
+
+
     private void sendAndStoreTextMessage(ContentResolver contentResolver, String[] destinations, String message) {
         SmsManager smsManager = SmsManager.getDefault();
         for (String destination : destinations) {

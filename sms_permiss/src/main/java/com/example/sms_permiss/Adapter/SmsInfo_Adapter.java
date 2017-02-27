@@ -5,20 +5,16 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sms_permiss.R;
 import com.example.sms_permiss.Show_detail_Activity;
-import com.example.sms_permiss.Utils.L;
 import com.example.sms_permiss.Utils.SmsDateBaseUtils;
 import com.example.sms_permiss.bean.Sms_Info;
 
 import java.util.List;
-
-import static android.view.View.inflate;
 
 /**
  * Created by Smile on 2016/11/22.

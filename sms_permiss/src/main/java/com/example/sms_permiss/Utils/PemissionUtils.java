@@ -7,10 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
-import com.example.sms_permiss.MainActivity;
-
-import static android.R.attr.start;
-
 /**
  * Created by Smile on 2016/11/22.
  */

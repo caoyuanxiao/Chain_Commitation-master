@@ -13,7 +13,6 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.administrator.chain_commitation.MyActivity;
 import com.example.administrator.chain_commitation.Observer.SmsMonitorObserver;
 import com.example.administrator.chain_commitation.Utils.HandlerUtils;
 import com.example.administrator.chain_commitation.bean.Sms_Info;
@@ -22,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 /**
  * 短信

@@ -1,10 +1,8 @@
 package com.example.sms_permiss.Utils;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.Telephony;
 
 import com.example.sms_permiss.bean.Sms_Info;
 
@@ -12,11 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static android.R.attr.id;
-import static android.R.attr.noHistory;
-import static android.R.id.list;
-import static android.R.string.no;
 
 
 /**
@@ -38,7 +31,7 @@ public class SmsDateBaseUtils {
     public List<Sms_Info> FromNumberGetdate(String address) {
         Cursor mCursor = mContext.getContentResolver().query(Uri.parse("content://sms"), new
                         String[]{"_id", "address", "date", "read", "body", "type", "thread_id",
-                "status"},
+                        "status"},
                 "address=" +
                         address, null, "date desc");
         if (mCursor != null) {
@@ -110,20 +103,40 @@ public class SmsDateBaseUtils {
     /**
      * 获取最新的一条短信
      */
+
     public void GetLaterDate() {
+
+
+
         Cursor cursor = mContext.getContentResolver().query(Uri.parse("content://sms/"), new
                 String[]{"* from threads --"}, null, null, null);
         while (cursor.moveToNext()) {
             String id = cursor.getString(cursor.getColumnIndex("_id"));
             int count = cursor.getShort(cursor.getColumnIndex("message_count"));
             //这里是最新的一条短信内容
+
             String snippet = cursor.getString(cursor.getColumnIndex("snippet"));
             String snippet_cs = cursor.getString(cursor.getColumnIndex("snippet_cs"));
             int type = cursor.getInt(cursor.getColumnIndex("type"));
-            L.i("id" + id + "count：" + count + "address" + snippet + "snippet_cs" + snippet_cs,
+            L.i("id" + id + "count：" + count  + "snipet："+snippet + "snippet_cs" + snippet_cs,
                     "type" + type);
         }
+
+        Cursor cursor1=mContext.getContentResolver().query(Uri.parse("content://mms-sms/canonical-addresses"), new String[]{"_id","address"}, null, null, null);
+        System.out.println("里面的信息数量为："+cursor1.getCount());
+        while (cursor1.moveToNext()){
+            String address1 = cursor1.getString(cursor1.getColumnIndex("address"));
+            String id = cursor1.getString(cursor1.getColumnIndex("_id"));
+            System.out.println("id:"+id+"address:"+address1);
+        }
+
         L.i("Thread内容数量为：" + cursor.getCount());
+        String[] names = cursor.getColumnNames();
+        for (int i = 0; i < names.length; i++) {
+            System.out.println(i + ":" + names[i]);
+        }
+
+
         String[] columnNames = cursor.getColumnNames();
         for (String str : columnNames
                 ) {

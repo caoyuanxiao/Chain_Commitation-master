@@ -2,37 +2,22 @@ package com.example.administrator.chain_commitation;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AppOpsManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.AsyncQueryHandler;
-import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Bundle;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.example.administrator.chain_commitation.Observer.SmsMonitorObserver;
@@ -41,14 +26,12 @@ import com.example.administrator.chain_commitation.Utils.SmsDateBaseUtils;
 import com.example.administrator.chain_commitation.bean.Sms_Info;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int REQUEST_CODE_ASK_CALL_PHONE = 1;
-    NotificationManager notificationManager;
-
     Button button;
     SharedPreferences.Editor edit;
-
     private SharedPreferences sp;
 
     SmsDateBaseUtils mSmsDateBaseUtils;
@@ -62,11 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         InitSp();
 
         mSmsDateBaseUtils = new SmsDateBaseUtils(this);
-        notificationManager = (android.app.NotificationManager) getSystemService
-                (NOTIFICATION_SERVICE);
+
         findViewById(R.id.nomal_notification).setOnClickListener(this);
         findViewById(R.id.Folding_notification).setOnClickListener(this);
         findViewById(R.id.xuangua_notification).setOnClickListener(this);
+
         button = (Button) findViewById(R.id.change_default_app);
         button.setOnClickListener(this);
         int i = checkMode();
@@ -107,7 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.xuangua_notification:
                 lastSmsInfo = SmsDateBaseUtils.getLastSmsInfo(this);
                 if (lastSmsInfo != null) {
-                    System.out.println("lastSmsInfo：" + lastSmsInfo.toString());
+                    String time=lastSmsInfo.getSms_time();
+                    String FormatTime=times(time);
+                    System.out.println("时间为："+FormatTime+"lastSmsInfo：" + lastSmsInfo.toString());
                 }
 
                 //  mSmsDateBaseUtils.GetLaterDate();
@@ -121,61 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void ShowXaungua() {
-
-        Notification.Builder builder = new Notification.Builder(this);
-        /*Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("www.baidu.com"));
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, mIntent, 0);
-        builder.setContentIntent(pendingIntent);*/
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-        builder.setAutoCancel(true);
-        builder.setContentTitle("悬挂式通知");
-
-        //如果描述的PendingIntent已经存在，则在产生新的Intent之前会先取消掉当前的
-        PendingIntent hangPendingIntent = PendingIntent.getActivity(this, 0, null, PendingIntent
-                .FLAG_CANCEL_CURRENT);
-        builder.setFullScreenIntent(hangPendingIntent, true);
-        builder.setContentIntent(hangPendingIntent);
-        notificationManager.notify(2, builder.build());
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void ShownomalPopuwind() {
-        Notification.Builder builder = new Notification.Builder(this);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("www.baidu.com"));
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        builder.setContentIntent(pendingIntent);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-        builder.setAutoCancel(true);
-        builder.setContentTitle("普通通知");
-        builder.setContentText("短信来了  你看看");
-        notificationManager.notify(0, builder.build());
-    }
-
-    //来下来显示具体的信息
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void ShowFolding() {
-        Notification.Builder builder = new Notification.Builder(this);
-        Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://blog.csdn" +
-                ".net/itachi85/"));
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, mIntent, 0);
-        builder.setContentIntent(pendingIntent);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
-        builder.setAutoCancel(true);
-        builder.setContentTitle("折叠式通知");
-        //用RemoteViews来创建自定义Notification视图
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.folding_layout);
-        Notification notification = builder.build();
-        //指定展开时的视图
-        notification.bigContentView = remoteViews;
-        notificationManager.notify(1, notification);
-    }
 
     @Override
     protected void onResume() {
@@ -219,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
 
-            //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
 
         }
     }
@@ -259,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
 
         } else {
-            Toast.makeText(this, "已经设置为默认短信了", 0).show();
+            Toast.makeText(this, "已经设置为默认短信了", Toast.LENGTH_SHORT).show();
             //现在已经是默认的APP了  点击则还原默认的短信软件
-            /*Intent intent1 = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+            Intent intent1 = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
             intent1.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, defaultSmsPackage);
             startActivity(intent1);
-            System.out.println("本APP已经是默认的短信APP");*/
+            System.out.println("本APP已经是默认的短信APP");
         }
     }
 
@@ -291,5 +221,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
         getContentResolver().unregisterContentObserver(new SmsMonitorObserver(HandlerUtils
                 .GetInstance(), this));
+    }
+
+    public static String times(String times) {
+        //时间戳转化为Sting或Date
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long time=new Long(times);
+        String d = format.format(time);
+
+        System.out.println("Format To String(Date):"+d);
+
+        return d;
+
     }
 }

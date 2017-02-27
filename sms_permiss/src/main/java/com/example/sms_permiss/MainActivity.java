@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
@@ -15,7 +15,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,10 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.sms_permiss.Adapter.SmsInfo_Adapter;
-import com.example.sms_permiss.Utils.SmsDateBaseUtils;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
-import static android.R.id.edit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,15 +40,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         InitSp();
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("yuanxiao");
         GetPermission();
-        InitRecyclerView();
         initWindow();
         IsDefaultAPP();
-
-
     }
 
     String defaultSmsPackage;
@@ -61,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void InitSp() {
-        sp = getSharedPreferences("sms_monitor", MODE_PRIVATE);
+        sp = getSharedPreferences("MySmsInfo", MODE_PRIVATE);
         edit = sp.edit();
-        if (sp.getBoolean("first", true)) {
-            edit.putBoolean("first", false);
+        if (!sp.getBoolean("first", true)) {
+            edit.putBoolean("first", true);
             if (Build.VERSION.SDK_INT >= 19) {
                 defaultSmsPackage = Telephony.Sms.getDefaultSmsPackage(this);
             }
@@ -116,11 +110,12 @@ public class MainActivity extends AppCompatActivity {
             // Hide the "not currently set as the default SMS app" interface
             // View viewGroup = findViewById(R.id.not_default_app);
             // viewGroup.setVisibility(View.GONE);
+
             Intent intent1 = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
             intent1.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, defaultSmsPackage);
             startActivity(intent1);
             System.out.println("本APP已经是默认的短信APP");
-        }
+    }
     }
 
     private void GetPermission() {
@@ -128,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (Settings.canDrawOverlays(this)) {
 
-            } else {
+           } else {
                 //android 6.0之后 需要创建window上面的悬浮窗体
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+               Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 startActivity(intent);
             }
 
@@ -142,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
                         .READ_SMS}, REQUEST_CODE_ASK_CALL_PHONE);
                 return;
             }
-
 
         }
     }
@@ -162,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void InitRecyclerView() {
+        System.out.println("初始化recycler");
         sms_recyclerView = (RecyclerView) findViewById(R.id.recycleview_SmsList);
 
         //创建现行LinearLayoutManager
@@ -181,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!Settings.canDrawOverlays(this)) {
                     // SYSTEM_ALERT_WINDOW permission not granted...
                     Toast.makeText(MainActivity.this, "not granted", Toast.LENGTH_SHORT);
+
                 }
             }
         }
@@ -192,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        InitRecyclerView();
 
     }
 
@@ -206,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     // Permission Granted
                     // getContentResolver().registerContentObserver(Uri.parse("content://sms"),
                     // true, new SmsMonitorObserver(new Handler(), this));
+                    InitRecyclerView();
                 } else {
                     // Permission Denied
                     Toast.makeText(MainActivity.this, "CALL_PHONE Denied", Toast.LENGTH_SHORT)
@@ -214,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
 
-            //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
 
         }
     }
