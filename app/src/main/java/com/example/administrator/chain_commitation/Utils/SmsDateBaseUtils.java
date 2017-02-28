@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.AsyncQueryHandler;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,13 +13,23 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
+
+import com.example.administrator.chain_commitation.MainActivity;
 import com.example.administrator.chain_commitation.bean.Sms_Info;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static android.R.attr.columnCount;
+import static android.R.attr.id;
+import static android.R.attr.phoneNumber;
+import static android.R.attr.start;
+import static android.R.attr.theme;
+import static android.R.attr.type;
 
 
 /**
@@ -68,6 +77,45 @@ public class SmsDateBaseUtils {
     }
 
 
+    /**
+     * 根据手机号码查询最新的手机短信内容
+     * @param address
+     * @return
+     */
+    public Sms_Info GetLastSms(String address){
+        Sms_Info msInfo=null;
+        Cursor mCursor = mContext.getContentResolver().query(Uri.parse("content://sms"), new
+                            String[]{"_id", "address", "date", "read", "body", "thread_id", "status"},
+                    "address=" +
+                            address, null, null);
+            if (mCursor != null) {
+                if (mCursor.moveToFirst()) {
+                    String id = mCursor.getString(mCursor.getColumnIndex("_id"));
+                    String address1 = mCursor.getString(mCursor.getColumnIndex("address"));
+                    long time = mCursor.getLong(mCursor.getColumnIndex("date"));
+                    Date date = new Date(time);//时间
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    String receiveTime = format.format(date);
+                    String body = mCursor.getString(mCursor.getColumnIndex("body"));
+                    int read = mCursor.getInt(mCursor.getColumnIndex("read"));
+                    int status = mCursor.getInt(mCursor.getColumnIndex("status"));
+                    L.i("status" + status);
+
+                    msInfo = new Sms_Info(read, id, receiveTime, body, address1);
+                    int thread_id = mCursor.getInt(mCursor.getColumnIndex("thread_id"));
+
+                    System.out.println(address+"最新的一条号码为："+msInfo.toString());
+
+                    return msInfo;
+                }
+
+            }
+        return null;
+
+
+    }
+
+
     //根据传递过来的电话号码获取短信  3解析出来短信内容
     public void FromReaderGte(String address) {
         int NoRead = 0;
@@ -105,7 +153,8 @@ public class SmsDateBaseUtils {
     }
 
     /**
-     * 获取最新的一条短信
+     * 获取最新的一条短信   这里就是查询thread数据库
+     * 并且可以获取到每个电话号码里面的message数量
      */
     public void GetLaterDate() {
         Cursor cursor = mContext.getContentResolver().query(Uri.parse("content://sms/"), new
@@ -347,37 +396,12 @@ public class SmsDateBaseUtils {
         // 拆分短信内容（手机短信长度限制）
         List<String> divideContents = smsManager.divideMessage("hello world");
         for (String text : divideContents) {
-            smsManager.sendTextMessage("17673045633", null, text, sendIntent, backIntent);
-        }
-
-
-    }
-
-    // 把短信写入数据库
-    public void writeMsg(){
-
-        try{
-            ContentValues values = new ContentValues();
-            // 发送时间
-            values.put("date", System.currentTimeMillis());
-            // 阅读状态
-            values.put("read", 0);
-            // 类型：1为收，2为发
-            values.put("type", 2);
-            // 发送号码
-            values.put("address","17673045633");
-            // 发送内容
-            values.put("body", "hello world");
-            // 插入短信库
-            mContext.getContentResolver().insert(Uri.parse("content://sms/sent"), values);
-        }catch (Exception e) {
-            Log.d("Exception", e.getMessage());
+            smsManager.sendTextMessage("5556", null, text, sendIntent, backIntent);
         }
     }
 
     PendingIntent backIntent;
 
-    //短信对面是否接收
     private void RecervStatu(Context mContext) {
         //处理返回的接收状态
         String DELIVERED_SMS_ACTION = "DELIVERED_SMS_ACTION";
@@ -407,10 +431,7 @@ public class SmsDateBaseUtils {
             public void onReceive(Context _context, Intent _intent) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-
-                        //发送成功之后吧信息写入到短信数据库中
                         System.out.println("发送成功");
-                        writeMsg();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         System.out.println("发送失败");
