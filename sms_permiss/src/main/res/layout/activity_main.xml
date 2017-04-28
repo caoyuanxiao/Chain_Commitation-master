@@ -5,19 +5,20 @@
 	android:id="@+id/activity_main"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingTop="@dimen/activity_vertical_margin"
+
 	tools:context="com.example.sms_permiss.MainActivity">
 
 	<android.support.v7.widget.Toolbar
 		android:id="@+id/toolbar"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"></android.support.v7.widget.Toolbar>
+		android:layout_height="wrap_content"
+		android:background="@color/colorPrimary"></android.support.v7.widget.Toolbar>
 
 	<android.support.v7.widget.RecyclerView
-		android:layout_below="@+id/toolbar"
 		android:id="@+id/recycleview_SmsList"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/toolbar">
 
 	</android.support.v7.widget.RecyclerView>
 </RelativeLayout>

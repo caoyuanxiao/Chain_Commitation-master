@@ -9,7 +9,13 @@
 		android:label="@string/app_name"
 		android:supportsRtl="true"
 		android:theme="@style/ImageTranslucentTheme">
-		<activity android:name=".Second_Activity">
+		<activity
+			android:name=".PopuActivity"
+			android:excludeFromRecents="true"
+			android:screenOrientation="user"
+			android:taskAffinity=""
+			android:theme="@style/DialogTransparent"
+			android:windowSoftInputMode="adjustResize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
