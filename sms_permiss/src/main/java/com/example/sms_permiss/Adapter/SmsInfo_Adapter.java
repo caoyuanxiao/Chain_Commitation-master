@@ -26,8 +26,9 @@ public class SmsInfo_Adapter extends RecyclerView.Adapter<SmsInfo_Adapter.ViewHo
 
     public SmsInfo_Adapter(Context context, String address) {
         mContext = context;
-        new SmsDateBaseUtils(mContext).GetLaterDate();
+        // new SmsDateBaseUtils(mContext).FromNumberGetdate(address);
         mSms_infos = new SmsDateBaseUtils(mContext).FromNumberGetdate(address);
+        System.out.println("当前的消息列表为：" + mSms_infos.size());
     }
 
     @Override

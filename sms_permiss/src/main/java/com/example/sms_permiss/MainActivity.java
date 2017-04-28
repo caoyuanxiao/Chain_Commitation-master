@@ -18,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -41,12 +40,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         InitSp();
 
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+       /* Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("yuanxiao");
-        GetPermission();
+        getSupportActionBar().setTitle("yuanxiao");*/
+        //GetPermission();
+
         initWindow();
-        IsDefaultAPP();
+        //IsDefaultAPP();
+        InitRecyclerView();
+
     }
 
     String defaultSmsPackage;
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             intent1.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, defaultSmsPackage);
             startActivity(intent1);
             System.out.println("本APP已经是默认的短信APP");
-    }
+        }
     }
 
     private void GetPermission() {
@@ -123,9 +125,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (Settings.canDrawOverlays(this)) {
 
-           } else {
+            } else {
                 //android 6.0之后 需要创建window上面的悬浮窗体
-               Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 startActivity(intent);
             }
 
@@ -165,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         sms_recyclerView.setLayoutManager(mLayoutManager);
         //设置item的动画，可以不设置
         sms_recyclerView.setItemAnimator(new DefaultItemAnimator());
-        sms_recyclerView.setAdapter(new SmsInfo_Adapter(this, "5556"));
+        sms_recyclerView.setAdapter(new SmsInfo_Adapter(this, "10010"));
     }
 
 
@@ -188,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        InitRecyclerView();
 
     }
 
@@ -210,8 +211,6 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                 }
                 break;
-
-
 
 
         }
