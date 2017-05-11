@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
                     + String.valueOf(sInfo.getMnc());
             String provider = matchIMSI(number);
 //            sb.append("Number:" + number);
-            sb.append("卡：" + i + "运营商：" + provider + "\n" + "电话号码为：" + sInfo.getNumber());
+            sb.append("卡：" + i + "运营商：" + sInfo.getDisplayName() + "\n" + "电话号码为：" + sInfo.getNumber());
         }
 
         tv_sim.setText(sb.toString());
