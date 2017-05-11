@@ -4,16 +4,28 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
+import com.chinacreator.Rxjava.NetworkUtil;
 import com.chinacreator.bean.weather;
 import com.chinacreator.http.RequestService;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Subscriber;
-import rx.functions.Func1;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -23,11 +35,54 @@ import rx.schedulers.Schedulers;
 public class RetrofitActivity extends AppCompatActivity {
 
     public final String key = "7416ab7becf1e0e118070355bf9f1d36";
+    TextView tv_response;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrofit);
+
+        tv_response = (TextView) findViewById(R.id.tv_response);
+
+        Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                CacheControl.Builder cacheBuilder = new CacheControl.Builder();
+                cacheBuilder.maxAge(0, TimeUnit.SECONDS);
+                cacheBuilder.maxStale(1, TimeUnit.SECONDS);
+                CacheControl cacheControl = cacheBuilder.build();
+
+                Request request = chain.request();
+                if (!NetworkUtil.hasNetwork(RetrofitActivity.this)) {
+                    request = request.newBuilder()
+                            .cacheControl(cacheControl)
+                            .build();
+                }
+                Response originalResponse = chain.proceed(request);
+                if (NetworkUtil.hasNetwork(RetrofitActivity.this)) {
+                    int maxAge = 0; // read from cache
+                    return originalResponse.newBuilder()
+                            .removeHeader("Pragma")
+                            .header("Cache-Control", "public ,max-age=" + maxAge)
+                            .build();
+                } else {
+                    int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
+                    return originalResponse.newBuilder()
+                            .removeHeader("Pragma")
+                            .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                            .build();
+                }
+            }
+        };
+
+        File httpCacheDirectory = new File(getCacheDir(), "responses");
+        int cacheSize = 10 * 1024 * 1024; // 10 MiB
+        Cache cache = new Cache(httpCacheDirectory, cacheSize);
+
+        final OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+                .cache(cache).build();
+
 
         findViewById(R.id.getDate).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,34 +95,30 @@ public class RetrofitActivity extends AppCompatActivity {
                         .addConverterFactory(GsonConverterFactory.create())
                         //增加返回值为Oservable<T>的支持
                         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                        .client(client)
                         .build();
 
 
-
-
                 final RequestService requestService = retrofit.create(RequestService.class);
-                requestService.getPostWeatherData11("郴州", 1, key).subscribeOn(Schedulers.io()).filter(new Func1<weather, Boolean>() {
-                    @Override
-                    public Boolean call(weather weather) {
-                        return weather.getResultcode().equals(200);
-                    }
-                }).subscribe(new Subscriber<weather>() {
-                    @Override
-                    public void onCompleted() {
+                requestService.getPostWeatherData11("郴州", 1, key).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Subscriber<weather>() {
+                            @Override
+                            public void onCompleted() {
 
-                        System.out.println("complete");
-                    }
+                                System.out.println("complete");
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        System.out.println("error:" + e.toString());
-                    }
+                            @Override
+                            public void onError(Throwable e) {
+                                System.out.println("error:" + e.toString());
+                            }
 
-                    @Override
-                    public void onNext(weather weather) {
-                        System.out.println("onnext:" + weather.getResultcode());
-                    }
-                });
+                            @Override
+                            public void onNext(weather weather) {
+                                //System.out.println("onnext:" + weather.getResultcode());
+                                tv_response.setText(weather.getReason());
+                            }
+                        });
 
               /*  HashMap<String, String> maps = new HashMap<String, String>();
                 maps.put("cityname", "郴州");

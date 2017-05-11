@@ -27,6 +27,7 @@ public interface RequestService {
     @POST("/weather/index")
     Call<weather> getMapWeatherDataBean(@Body PostBean bean);
 
+
     @POST("index/")
     Call<weather> getPostWeatherData(@Query("cityname") String cityname, @Query("format") int type, @Query("key") String key);
 
