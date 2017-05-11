@@ -49,29 +49,35 @@ public class RetrofitActivity extends AppCompatActivity {
             public Response intercept(Chain chain) throws IOException {
                 CacheControl.Builder cacheBuilder = new CacheControl.Builder();
                 cacheBuilder.maxAge(0, TimeUnit.SECONDS);
-                cacheBuilder.maxStale(1, TimeUnit.SECONDS);
+                cacheBuilder.maxStale(1, TimeUnit.MINUTES);
+
                 CacheControl cacheControl = cacheBuilder.build();
+
+
 
                 Request request = chain.request();
                 if (!NetworkUtil.hasNetwork(RetrofitActivity.this)) {
                     request = request.newBuilder()
-                            .cacheControl(cacheControl)
+                            .cacheControl(CacheControl.FORCE_CACHE)
                             .build();
                 }
                 Response originalResponse = chain.proceed(request);
                 if (NetworkUtil.hasNetwork(RetrofitActivity.this)) {
-                    int maxAge = 0; // read from cache
+                    int maxAge = 60; // read from cache  有网络时候设置缓存超时未0个小时
                     return originalResponse.newBuilder()
                             .removeHeader("Pragma")
                             .header("Cache-Control", "public ,max-age=" + maxAge)
                             .build();
                 } else {
-                    int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-                    return originalResponse.newBuilder()
-                            .removeHeader("Pragma")
-                            .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                            .build();
+                   // int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale  无网络设置缓存时间为4周
+//                    int maxStale=60;
+//                    return originalResponse.newBuilder()
+//                            .removeHeader("Pragma")
+//                            .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+//                            .build();
+
                 }
+                return originalResponse;
             }
         };
 
@@ -80,7 +86,8 @@ public class RetrofitActivity extends AppCompatActivity {
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
         final OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+                //.addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+                .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .cache(cache).build();
 
 
