@@ -1,1 +1,1 @@
-include ':app', ':sms_permiss', ':test_stutabar', ':creatorsms'
+include ':app', ':sms_permiss', ':creatorsms'

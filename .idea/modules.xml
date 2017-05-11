@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/creatorsms/creatorsms.iml" filepath="$PROJECT_DIR$/creatorsms/creatorsms.iml" />
       <module fileurl="file://$PROJECT_DIR$/sms_permiss/sms_permiss.iml" filepath="$PROJECT_DIR$/sms_permiss/sms_permiss.iml" />
-      <module fileurl="file://$PROJECT_DIR$/test_stutabar/test_stutabar.iml" filepath="$PROJECT_DIR$/test_stutabar/test_stutabar.iml" />
     </modules>
   </component>
 </project>

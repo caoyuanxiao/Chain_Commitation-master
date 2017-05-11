@@ -33,4 +33,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'//Retrofit2所需要的包
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'//ConverterFactory的Gson依赖包
     compile 'com.squareup.retrofit2:converter-scalars:2.0.0-beta4'//ConverterFactory的String依赖包
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
 }
