@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#efeff4"
+
+              android:orientation="vertical">
+	
+	<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar_login"
+		android:layout_width="match_parent"
+		android:layout_height="?android:attr/actionBarSize"
+		app:theme="@style/ThemeOverlay.AppCompat.Dark"
+		android:background="@color/colorPrimary"
+		/>
+	
+	<android.support.design.widget.TextInputLayout
+		android:layout_width="match_parent"
+		android:layout_height="55dp"
+		android:id="@+id/input_account"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="53dp"
+		app:theme="@style/AlertDialog.AppCompat.Light">
+		
+		<EditText
+			android:id="@+id/login_inputPhone"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:hint="OA账号/手机号码"
+			android:textColor="#222222"
+			android:textColorHint="#efeff4"
+			android:maxLength="25"
+			android:textSize="17sp"
+			android:maxLines="1"/>
+	</android.support.design.widget.TextInputLayout>
+	
+	
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="55dip"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="16dp"
+		android:orientation="horizontal">
+		
+		<android.support.design.widget.TextInputLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
+			android:id="@+id/input_yzm">
+			
+			<EditText
+				android:id="@+id/login_account_short_message"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:hint="验证码"
+				android:maxLength="10"
+				android:textColorHint="@color/system_assist_text"
+				android:textColor="#222222"
+				android:textSize="17sp"
+				android:maxLines="1"/>
+		</android.support.design.widget.TextInputLayout>
+		
+	
+	
+	</LinearLayout>
+	
+	
+	
+	
+	<Button
+		android:layout_width="240dip"
+		android:layout_height="50dip"
+		android:text="登录"
+		android:layout_marginTop="60dp"
+		android:gravity="center"
+		android:textSize="18sp"
+		android:layout_gravity="center"
+		android:textColor="@android:color/white"
+		android:id="@+id/login_btn"
+		/>
+
+</LinearLayout>

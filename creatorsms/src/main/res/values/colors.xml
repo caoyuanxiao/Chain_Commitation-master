@@ -6,4 +6,5 @@
 
 	<color name="transparent">#00ffffff</color>
 	<color name="white">#ffffff</color>
+	<color name="system_assist_text">#a8a8a8</color>
 </resources>
